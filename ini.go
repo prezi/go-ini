@@ -49,6 +49,18 @@ func (f File) Get(section, key string) (value string, ok bool) {
 	return
 }
 
+// Looks up a value for a key in a section and returns that value or a default if it doesn't exist
+func (f File) GetWithDefault(section, key, defval string) (value string) {
+	s, ok := f[section]
+	if ok {
+		value, ok = s[key]
+	}
+	if !ok {
+		value = defval
+	}
+	return
+}
+
 // Loads INI data from a reader and stores the data in the File.
 func (f File) Load(in io.Reader) (err error) {
 	bufin, ok := in.(*bufio.Reader)
