@@ -61,6 +61,14 @@ func (f File) GetWithDefault(section, key, defval string) (value string) {
 	return
 }
 
+func (s Section) GetWithDefault(key, defval string) (value string) {
+	value, ok := s[key]
+	if !ok {
+		value = defval
+	}
+	return
+}
+
 // Loads INI data from a reader and stores the data in the File.
 func (f File) Load(in io.Reader) (err error) {
 	bufin, ok := in.(*bufio.Reader)
