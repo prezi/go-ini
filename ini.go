@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -61,10 +62,28 @@ func (f File) GetWithDefault(section, key, defval string) (value string) {
 	return
 }
 
+func (f File) GetInt(section, key string, defval int64) (val int64) {
+	strval := f.GetWithDefault(section, key, fmt.Sprintf("%d", defval))
+	val, err := strconv.ParseInt(strval, 0, 64)
+	if err != nil {
+		val = defval
+	}
+	return
+}
+
 func (s Section) GetWithDefault(key, defval string) (value string) {
 	value, ok := s[key]
 	if !ok {
 		value = defval
+	}
+	return
+}
+
+func (s Section) GetInt(key string, defval int64) (val int64) {
+	strval := s.GetWithDefault(key, fmt.Sprintf("%d", defval))
+	val, err := strconv.ParseInt(strval, 0, 64)
+	if err != nil {
+		val = defval
 	}
 	return
 }
